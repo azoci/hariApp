@@ -18,12 +18,11 @@ export class ListService {
 
     private itemUrl = 'http://localhost:8000/item/';  // UR
     constructor(private _http: HttpClient) {
-        this._headers = httpOptions.headers.set('Content-Type', 'application/json; charset=utf-8')
-        .set('Authorization', '*');
+
     }
 
     getItems(): Observable<any[]> {
-        return this._http.get<any[]>(this.itemUrl);
+        return this._http.get<any[]>(this.itemUrl, httpOptions);
     }
 
 }

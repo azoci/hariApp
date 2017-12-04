@@ -10,8 +10,7 @@ const routes: Routes = [
     { path: 'error', loadChildren: './server-error/server-error.module#ServerErrorModule' },
     { path: 'access-denied', loadChildren: './access-denied/access-denied.module#AccessDeniedModule' },
     { path: 'not-found', loadChildren: './not-found/not-found.module#NotFoundModule' },
-    { path: 'stock', loadChildren: './stock/stock.module#StockModule' },
-    { path: '**', redirectTo: 'not-found' }
+    { path: '**', redirectTo: 'not-found' },
 ];
 
 @NgModule({
