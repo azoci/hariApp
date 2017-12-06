@@ -12,9 +12,8 @@ import { routerTransition } from '../../../../router.animations';
 })
 export class ItemComponent implements OnInit {
 
-    displayedColumns = ['nm', 'cd', 'url'];
+    displayedColumns = ['nm', 'cd', 'biznm', 'cbizm', 'pros', 'cons', 'eqcap'];
     dataSource: any;
-    
     constructor(private service: ListService) {}
     ngOnInit() {
         this.service.getItems().subscribe(res => {
@@ -25,6 +24,10 @@ export class ItemComponent implements OnInit {
 export interface Element {
     nm: string;
     cd: string;
-    url: string;
+    biznm: string;
+    cbizm: string;
+    pros: string;
+    cons: string;
+    eqcap: number;
 }
 
