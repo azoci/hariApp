@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {MatTableDataSource} from '@angular/material';
+
 import { ListService} from '../../../../shared/services/stock-service/list.service';
 import { routerTransition } from '../../../../router.animations';
 
@@ -10,10 +12,19 @@ import { routerTransition } from '../../../../router.animations';
 })
 export class ItemComponent implements OnInit {
 
-  constructor(private service: ListService) { }
-
-  ngOnInit() {
-      this.service.getItems().subscribe(res => console.log(res));
-  }
-
+    displayedColumns = ['nm', 'cd', 'url'];
+    dataSource: any;
+    
+    constructor(private service: ListService) {}
+    ngOnInit() {
+        this.service.getItems().subscribe(res => {
+            this.dataSource = new MatTableDataSource<Element>(res.results);
+        });
+    }
 }
+export interface Element {
+    nm: string;
+    cd: string;
+    url: string;
+}
+

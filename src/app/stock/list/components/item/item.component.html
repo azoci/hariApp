@@ -4,36 +4,28 @@
             <h4>table example</h4>
         </div>
         <div class="table-responsive">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+		<mat-table #table [dataSource]="dataSource">
+		   <!--- Note that these columns can be defined in any order.
+		         The actual rendered columns are set as a property on the row definition" -->
+		   <!-- Position Column -->
+		   <ng-container matColumnDef="nm">
+		     <mat-header-cell *matHeaderCellDef> NM </mat-header-cell>
+		     <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
+		   </ng-container>
+		
+		   <!-- Name Column -->
+		   <ng-container matColumnDef="cd">
+		     <mat-header-cell *matHeaderCellDef> CD </mat-header-cell>
+		     <mat-cell *matCellDef="let element"> {{element.cd}} </mat-cell>
+		   </ng-container>
+		
+		   <!-- Weight Column -->
+		   <ng-container matColumnDef="url">
+		     <mat-header-cell *matHeaderCellDef> URL </mat-header-cell>
+		     <mat-cell *matCellDef="let element"> {{element.url}} </mat-cell>
+		   </ng-container>
+		   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+		   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+		</mat-table>
     </div>
 </div>
