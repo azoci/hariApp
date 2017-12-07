@@ -7,6 +7,10 @@ import { StockRoutingModule } from './stock-routing.module';
 import { MatTableModule } from '@angular/material';
 
 import { ItemComponent } from './list/components/item/item.component';
+import { EachComponent } from './dashboard/components/each/each.component';
+import { PageHeaderModule } from './../shared';
+import { ChartsModule as Ng2Charts } from 'ng2-charts';
+
 
 @NgModule({
   imports: [
@@ -14,9 +18,12 @@ import { ItemComponent } from './list/components/item/item.component';
       StockRoutingModule,
       HttpClientModule,
       MatTableModule,
+      PageHeaderModule,
+      Ng2Charts,
   ],
   declarations: [
-      ItemComponent
+      ItemComponent,
+      EachComponent,
   ]
 })
 export class StockModule { }
