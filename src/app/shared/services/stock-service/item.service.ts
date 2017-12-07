@@ -12,16 +12,13 @@ export class ItemService {
     private _host: string;
     private _authToken: string;
     private _headers: HttpHeaders;
-    
     private itemUrl = 'http://localhost:8000/item/';  // URL
     constructor(private _http: HttpClient) {}
-    
     getItems(): Observable<any> {
         return this._http.get<any>(this.itemUrl, httpOptions);
     }
-
     getItem(i: string): Observable<any> {
-        let url = this.itemUrl + i;
+        const url = this.itemUrl + i;
         return this._http.get<any>(url, httpOptions);
     }
 }

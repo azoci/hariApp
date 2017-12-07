@@ -31,7 +31,7 @@
             </ng-container>
             <ng-container matColumnDef="eqcap">
                 <mat-header-cell *matHeaderCellDef> 자산(억) </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.eqcap / 100000000}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.eqcap / 10000000|number:'.0-0'}} </mat-cell>
             </ng-container>
 		   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 		   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

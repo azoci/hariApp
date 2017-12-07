@@ -1,85 +1,87 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'ITEM DASHBOARD'"></app-page-header>
-        <div class="row">
-            <div class="col col-lg-12">
-	            <div class="card mb-3">
-	                <div class="card-header">
-               			요소1
-	                </div>
-  	                <div class="card-body row">
-					    <div class="col-lg-1">회사명</div>
-					    <div class="col-lg-5">{{item.nm}}</div>
-					    <div class="col-lg-1">종목코드</div>
-					    <div class="col-lg-5">{{item.cd}}</div>
-					    <div class="col-lg-1">사업내용</div>
-					    <div class="col-lg-5">{{item.biznm}}</div>
-					    <div class="col-lg-1">주요사업</div>
-					    <div class="col-lg-5">음료서비스</div>  	
-					    <div class="col-lg-1">강점</div>
-					    <div class="col-lg-11">중국 기업과 독점 계약, 세계 상위 수준의 기술</div>
-					    <div class="col-lg-1">약점</div>
-					    <div class="col-lg-11">후발 주자가 생겨날 경우 원가 경쟁이 될 수 있음</div>
-					    <div class="col-lg-1">발행주식</div>
-					    <div class="col-lg-2">9,115,755</div>
-					    <div class="col-lg-1">자산(억)</div>
-					    <div class="col-lg-2">113</div>  	
-   					    <div class="col-lg-1">투자매력</div>
-					    <div class="col-lg-2">중하</div>
-					    <div class="col-lg-1">보유여부</div>
-					    <div class="col-lg-2">Y</div>  	                	
-	                </div>
-	            </div>
-	            <div class="card mb-3">
-	                <div class="card-header">
-               			요소2
-	                </div>
-  	                <div class="card-body row">
-					    <div class="col-lg-1">단순성</div>
-					    <div class="col-lg-11">체분석 분석기(인바디) 개발 및 판매</div>
-					    <div class="col-lg-1">일관성</div>
-					    <div class="col-lg-11">1996년 설립, 2000년 코스닥 상장</div>
-					    <div class="col-lg-1">전망성</div>
-					    <div class="col-lg-11">인바디밴드 매출 저조, 체분석 분석기 시장 점유율 1위, 수출 비중 70% 수준</div>
-	                </div>
-	            </div>
-   	            <div class="card mb-3">
-	                <div class="card-header">
-               			요소3
-	                </div>
-  	                <div class="card-body row">
-					    <div class="col-lg-3">
-                        	<canvas baseChart height="400px" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                    		</canvas>
-                    	</div>
-					    <div class="col-lg-3">
-                        	<canvas baseChart height="400px" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                    		</canvas>
-                    	</div>
-					    <div class="col-lg-3">
-                        	<canvas baseChart height="400px" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                    		</canvas>
-                    	</div>
-					    <div class="col-lg-3">
-                        	<canvas baseChart height="400px" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                    		</canvas>
-                    	</div>                    	                    	                    	
-	                </div>
-	            </div>	
-   	            <div class="card mb-3">
-	                <div class="card-header">
-               			요소4
-	                </div>
-  	                <div class="card-body row">
-					    <div class="col-lg-6">
-		                    <canvas baseChart height="130" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-		                    </canvas>
-                    	</div>
-					    <div class="col-lg-6">
-		                    <canvas baseChart height="130" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-		                    </canvas>
-                    	</div>
-	                </div>
-	            </div>		                   
+    <div class="row">
+        <div class="col col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    상세정보
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-1">회사명</div>
+                    <div class="col-lg-5">{{item?.nm}}</div>
+                    <div class="col-lg-1">종목코드</div>
+                    <div class="col-lg-3">{{item?.cd}}</div>
+                    <div class="col-lg-1">보유여부</div>
+                    <div class="col-lg-1">{{item?.f_yn}}</div>
+                    <div class="col-lg-1">사업내용</div>
+                    <div class="col-lg-5">{{item?.biznm}}</div>
+                    <div class="col-lg-1">주요사업</div>
+                    <div class="col-lg-5">{{item?.cbiznm}}</div>
+                    <div class="col-lg-1">강점</div>
+                    <div class="col-lg-11">{{item?.pros}}</div>
+                    <div class="col-lg-1">약점</div>
+                    <div class="col-lg-11">{{item?.cons}}</div>
+                    <div class="col-lg-1">발행주식</div>
+                    <div class="col-lg-2">{{item?.stknum}}</div>
+                    <div class="col-lg-1">자산(억)</div>
+                    <div class="col-lg-2">{{item?.eqcap/10000000 |number:'.0-0'}} </div>
+                    <div class="col-lg-1">종목분류</div>
+                    <div class="col-lg-1">{{item?.stktm}}</div>
+                    <div class="col-lg-1">투자매력</div>
+                    <div class="col-lg-3">{{item?.attr}}</div>
+                </div>
             </div>
-	    </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    기업요소
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-1">단순성</div>
+                    <div class="col-lg-11">{{bizAnal?.v101}}</div>
+                    <div class="col-lg-1">일관성</div>
+                    <div class="col-lg-11">{{bizAnal?.v102}}</div>
+                    <div class="col-lg-1">전망성</div>
+                    <div class="col-lg-11">{{bizAnal?.v103}}</div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    재무요소
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-3">
+                        <canvas baseChart height="400px" [datasets]="croBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                    <div class="col-lg-3">
+                        <canvas baseChart height="400px" [datasets]="roeBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                    <div class="col-lg-3">
+                        <canvas baseChart height="400px" [datasets]="rosBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                    <div class="col-lg-3">
+                        <canvas baseChart height="400px" [datasets]="wcpBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    가치요소
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-6">
+                        <canvas baseChart height="130" [datasets]="priceLine" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                    <div class="col-lg-6">
+                        <canvas baseChart height="130" [datasets]="valueLine" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
