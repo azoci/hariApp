@@ -14,6 +14,7 @@ import { AuthGuard } from './shared';
 import { ListService } from './shared/services/stock-service/list.service';
 import { ItemService } from './shared/services/stock-service/item.service';
 import { AnalysisService } from './shared/services/stock-service/analysis.service';
+import { HistoryService } from './shared/services/stock-service/history.service';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -39,7 +40,11 @@ export function createTranslateLoader(http: HttpClient) {
         AppRoutingModule
     ],
     declarations: [AppComponent],
-    providers: [AuthGuard, ListService, ItemService, AnalysisService],
+    providers: [AuthGuard,
+        ListService,
+        ItemService,
+        AnalysisService,
+        HistoryService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

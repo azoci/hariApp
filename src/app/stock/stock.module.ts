@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material';
 
 import { ItemComponent } from './list/components/item/item.component';
 import { EachComponent } from './dashboard/components/each/each.component';
+import { TotalComponent } from './dashboard/components/total/total.component';
 import { PageHeaderModule } from './../shared';
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
@@ -24,6 +25,7 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
   declarations: [
       ItemComponent,
       EachComponent,
+      TotalComponent,
   ]
 })
 export class StockModule { }

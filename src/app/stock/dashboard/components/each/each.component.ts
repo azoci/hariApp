@@ -12,16 +12,6 @@ import { AnalysisService } from '../../../../shared/services/stock-service/analy
 })
 export class EachComponent implements OnInit {
 
-    // Pie
-    public pieChartLabels: string[] = [
-        'Download Sales',
-        'In-Store Sales',
-        'Mail Sales'
-    ];
-    public pieChartData: number[] = [300, 500, 100];
-    public pieChartType: string = 'pie';
-
-
     public item;
     public bizAnal; //기업요소(100)
     public roe; // 자기자본순이익률(301)

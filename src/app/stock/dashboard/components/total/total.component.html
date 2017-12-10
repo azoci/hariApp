@@ -1,3 +1,95 @@
-<p>
-  total works!
-</p>
+<div [@routerTransition]>
+    <app-page-header [heading]="'TOTAL DASHBOARD'"></app-page-header>
+    <div class="row">
+        <div class="col col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    투자회사
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-12">
+                        <canvas baseChart height="50" [datasets]="invBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    가치분석
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-12">
+                        <canvas baseChart height="50" [datasets]="priceLine" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    거래이력
+                </div>
+                <div class="card-body row">
+                    <mat-table #table [dataSource]="tradeDS" class="col-lg-12">
+                        <ng-container matColumnDef="dt">
+                            <mat-header-cell *matHeaderCellDef> 거래일 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.dt}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="type_nm">
+                            <mat-header-cell *matHeaderCellDef> 구분 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.type_nm}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="item_key">
+                            <mat-header-cell *matHeaderCellDef> 회사명 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.item_key}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="num">
+                            <mat-header-cell *matHeaderCellDef> 수 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.num}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="price">
+                            <mat-header-cell *matHeaderCellDef> 단가 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="amt">
+                            <mat-header-cell *matHeaderCellDef> 금액 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.amt}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="content">
+                            <mat-header-cell *matHeaderCellDef> 사유 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.content}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="tradeColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: tradeColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    사건이력
+                </div>
+                <div class="card-body row">
+                    <mat-table #table [dataSource]="eventDS" class="col-lg-12">
+                        <ng-container matColumnDef="dt">
+                            <mat-header-cell *matHeaderCellDef> 사건일 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.dt}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="nm">
+                            <mat-header-cell *matHeaderCellDef> 제목 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="rate">
+                            <mat-header-cell *matHeaderCellDef> 등락률 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.rate}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="content">
+                            <mat-header-cell *matHeaderCellDef> 내용 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.content}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="eventColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: eventColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
