@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -15,6 +14,7 @@ import { ListService } from './shared/services/stock-service/list.service';
 import { ItemService } from './shared/services/stock-service/item.service';
 import { AnalysisService } from './shared/services/stock-service/analysis.service';
 import { HistoryService } from './shared/services/stock-service/history.service';
+import { InvestService } from './shared/services/stock-service/invest.service';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -29,7 +29,6 @@ export function createTranslateLoader(http: HttpClient) {
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        HttpModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -44,7 +43,9 @@ export function createTranslateLoader(http: HttpClient) {
         ListService,
         ItemService,
         AnalysisService,
-        HistoryService],
+        HistoryService,
+        InvestService,
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
