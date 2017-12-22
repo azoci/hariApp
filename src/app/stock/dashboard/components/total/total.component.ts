@@ -30,31 +30,40 @@ export class TotalComponent implements OnInit {
     };
     public lineChartColors: Array<any> = [
         {
-            // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
+            // Crimson 매입주가
+            backgroundColor: 'rgba(220,20,60,0.2)',
+            borderColor: 'rgba(220,20,60,1)',
+            pointBackgroundColor: 'rgba(220,20,60,1)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+            pointHoverBorderColor: 'rgba(220,20,60,0.8)'
         },
         {
-            // dark grey
-            backgroundColor: 'rgba(77,83,96,0.2)',
-            borderColor: 'rgba(77,83,96,1)',
-            pointBackgroundColor: 'rgba(77,83,96,1)',
+            // Orange 적정주가(버핏)
+            backgroundColor: 'rgba(255,165,0,0.2)',
+            borderColor: 'rgba(255,165,0,1)',
+            pointBackgroundColor: 'rgba(255,165,0,1)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(77,83,96,1)'
+            pointHoverBorderColor: 'rgba(255,165,0,0.8)'
         },
         {
-            // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
+            // GoldenRod 적정주가(그레이엄, 7.2% 10년)
+            backgroundColor: 'rgba(218,165,32,0.2)',
+            borderColor: 'rgba(218,165,32,1)',
+            pointBackgroundColor: 'rgba(218,165,32,1)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+            pointHoverBorderColor: 'rgba(218,165,32,1)'
+        },
+        {
+            // DeepSkyBlue 현재주가
+            backgroundColor: 'rgba(0,191,255,0.2)',
+            borderColor: 'rgba(0,191,255,1)',
+            pointBackgroundColor: 'rgba(0,191,255,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(0,191,255,0.8)'
         }
     ];
     public lineChartLegend: boolean = true;
@@ -64,13 +73,15 @@ export class TotalComponent implements OnInit {
     public priceLine: any[] = [
         { data: [965, 59, 80, 81, 56, 55, 65, 59, 80, 81, 56, 55], label: 'Series A' },
         { data: [528, 48, 40, 19, 86, 27, 28, 48, 40, 19, 86, 27], label: 'Series B' },
-        { data: [518, 48, 77, 9, 100, 27, 18, 48, 77, 9, 100, 27], label: 'Series C' }
+        { data: [518, 48, 77, 9, 100, 27, 18, 48, 77, 9, 100, 27], label: 'Series C' },
+        { data: [18, 48, 77, 9, 100, 528, 48, 40, 19, 86, 81, 56], label: 'Series D' }
     ];
     public bup: any[] = []; // 적정주가(버핏)
     public grp: any[] = []; // 적정주가(그레이엄, 7.2% 10년)
     public crp: any[] = []; // 현재주가
+    public byp: any[] = []; // 매입주가
 
-    public tradeColumns = ['dt', 'type_nm', 'item_key', 'num', 'price', 'amt', 'content'];
+    public tradeColumns = ['dt', 'type_nm', 'nm', 'num', 'price', 'amt', 'content'];
     public eventColumns = ['dt', 'nm', 'rate', 'content'];
     public tradeDS: any;
     public eventDS: any;
@@ -84,6 +95,7 @@ export class TotalComponent implements OnInit {
           for (let i of res.results) {
               this.barChartLabels.push(i.nm);
               this.amt.push(Math.round(i.buy_amt));
+              this.byp.push(Math.round(i.buy_price));
           }
           this.invBar = [{data: this.amt, label: '투자금액(원)'}];
           items = res.results;
@@ -108,7 +120,9 @@ export class TotalComponent implements OnInit {
                       }
                   }
               }
+
               this.priceLine = [
+                  { data: this.byp, label: '매입주가'},
                   { data: this.bup, label: '적정주가(버핏)' },
                   { data: this.grp, label: '적정주가(그레이엄, 7.2% 10년)' },
                   { data: this.crp, label: '현재주가' }
@@ -117,7 +131,10 @@ export class TotalComponent implements OnInit {
               console.log(this.priceLine);
           });
       });
-      this.historyService.getTrades().subscribe(res => this.tradeDS = new MatTableDataSource<Trade>(res.results));
+      this.historyService.getTrades().subscribe(res => {
+          console.log(res);
+          this.tradeDS = new MatTableDataSource<Trade>(res.results);
+      });
       this.historyService.getEvents().subscribe(res => this.eventDS = new MatTableDataSource<Event>(res.results));
 
   }
@@ -127,7 +144,7 @@ export class TotalComponent implements OnInit {
 export interface Trade {
     dt: string;
     type_nm: string;
-    item_key: string;
+    nm: string;
     num: number;
     price: number;
     amt: number;
