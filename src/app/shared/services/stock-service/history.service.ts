@@ -22,4 +22,12 @@ export class HistoryService {
         const url = this.historyUrl + 'event';
         return this._http.get<any>(url, httpOptions);
     }
+    postTrade(body: any): Observable<any> {
+        const url = this.historyUrl + 'trade/';
+        return this._http.post(url, JSON.stringify(body), httpOptions);
+    }
+    postEvent(body: any): Observable<any> {
+        const url = this.historyUrl + 'event/';
+        return this._http.post(url, JSON.stringify(body), httpOptions);
+    }
 }

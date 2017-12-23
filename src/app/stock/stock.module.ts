@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { StockRoutingModule } from './stock-routing.module';
 import { MatTableModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
+import { SharedPipesModule } from './../shared/pipes/shared-pipes.module';
 
 import { ItemComponent } from './list/components/item/item.component';
 import { EachComponent } from './dashboard/components/each/each.component';
@@ -28,6 +30,9 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
       MatFormFieldModule,
       MatInputModule,
       MatSelectModule,
+      FormsModule,
+      ReactiveFormsModule,
+      SharedPipesModule,
   ],
   declarations: [
       ItemComponent,
