@@ -14,6 +14,7 @@ export class TradeComponent implements OnInit {
     public tradeForm: FormGroup;
     public query = '';
     public items: any;
+    public visible = true;
     constructor(private _fb: FormBuilder,
                 private historyService: HistoryService,
                 private itemService: ItemService
@@ -46,5 +47,7 @@ export class TradeComponent implements OnInit {
         .setValue(item.nm);
         (<FormControl>this.tradeForm.controls['item_key'])
         .setValue(item.url);
+        this.visible = false;
     }
+
 }

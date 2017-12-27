@@ -9,6 +9,7 @@ const routes: Routes = [
     { path: '', component: ItemComponent},
     { path: 'item', component: ItemComponent},
     { path: 'each', component: EachComponent},
+    { path: 'each/:key', component: EachComponent},
     { path: 'total', component: TotalComponent},
     { path: 'trade', component: TradeComponent},
     { path: 'event', component: EventComponent},

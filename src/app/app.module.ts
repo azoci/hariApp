@@ -10,7 +10,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
-import { ListService } from './shared/services/stock-service/list.service';
 import { ItemService } from './shared/services/stock-service/item.service';
 import { AnalysisService } from './shared/services/stock-service/analysis.service';
 import { HistoryService } from './shared/services/stock-service/history.service';
@@ -40,7 +39,6 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     declarations: [AppComponent],
     providers: [AuthGuard,
-        ListService,
         ItemService,
         AnalysisService,
         HistoryService,

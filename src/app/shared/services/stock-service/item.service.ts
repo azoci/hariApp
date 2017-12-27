@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-const httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
 @Injectable()
 export class ItemService {
@@ -13,12 +10,15 @@ export class ItemService {
     private _authToken: string;
     private _headers: HttpHeaders;
     private itemUrl = 'http://localhost:8000/item/';  // URL
+    private params;
     constructor(private _http: HttpClient) {}
     getItems(): Observable<any> {
-        return this._http.get<any>(this.itemUrl, httpOptions);
+        this.params = new HttpParams().set('yn', 'Y');
+        console.log(this.params);
+        return this._http.get<any>(this.itemUrl, {headers: headers, params: this.params});
     }
-    getItem(i: string): Observable<any> {
-        const url = this.itemUrl + i;
-        return this._http.get<any>(url, httpOptions);
+    getItem(key: string): Observable<any> {
+        const url = this.itemUrl + key;
+        return this._http.get<any>(url, { headers: headers});
     }
 }

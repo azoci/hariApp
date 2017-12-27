@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {MatTableDataSource} from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 
-import { ListService} from '../../../../shared/services/stock-service/list.service';
+import { ItemService} from '../../../../shared/services/stock-service/item.service';
 import { routerTransition } from '../../../../router.animations';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-item',
@@ -12,16 +13,33 @@ import { routerTransition } from '../../../../router.animations';
 })
 export class ItemComponent implements OnInit {
 
-    displayedColumns = ['nm', 'cd', 'biznm', 'cbizm', 'pros', 'cons', 'eqcap'];
+    displayedColumns = ['mrktm', 'nm', 'cd', 'biznm', 'cbizm', 'pros', 'cons', 'eqcap'];
     dataSource: any;
-    constructor(private service: ListService) {}
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+    constructor(private service: ItemService,
+                private router: Router) {}
     ngOnInit() {
         this.service.getItems().subscribe(res => {
             this.dataSource = new MatTableDataSource<Element>(res.results);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
         });
+    }
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    }
+    handleRowClick(row) {
+        console.log(row.key);
+        this.router.navigate(['/stock/each', row.key]);
     }
 }
 export interface Element {
+    mrktm: string;
     nm: string;
     cd: string;
     biznm: string;

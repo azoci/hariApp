@@ -4,37 +4,48 @@
             <h4>종목 목록</h4>
         </div>
         <div class="table-responsive">
-		<mat-table #table [dataSource]="dataSource">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="종목 검색">
+        </mat-form-field>
+		<mat-table #table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="mrktm">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> 시장구분 </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.mrktm}} </mat-cell>
+            </ng-container>
 		   <ng-container matColumnDef="nm">
-		     <mat-header-cell *matHeaderCellDef> 종목명 </mat-header-cell>
+		     <mat-header-cell *matHeaderCellDef mat-sort-header> 종목명 </mat-header-cell>
 		     <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
 		   </ng-container>
 		   <ng-container matColumnDef="cd">
-		     <mat-header-cell *matHeaderCellDef> 종목코드 </mat-header-cell>
+		     <mat-header-cell *matHeaderCellDef mat-sort-header> 종목코드 </mat-header-cell>
 		     <mat-cell *matCellDef="let element"> {{element.cd}} </mat-cell>
 		   </ng-container>
 		   <ng-container matColumnDef="biznm">
-		     <mat-header-cell *matHeaderCellDef> 산업분류 </mat-header-cell>
+		     <mat-header-cell *matHeaderCellDef mat-sort-header> 산업분류 </mat-header-cell>
 		     <mat-cell *matCellDef="let element"> {{element.biznm}} </mat-cell>
 		   </ng-container>
             <ng-container matColumnDef="cbizm">
-                <mat-header-cell *matHeaderCellDef> 주사업내용 </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> 주사업내용 </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.cbizm}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="pros">
-                <mat-header-cell *matHeaderCellDef> 강점 </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> 강점 </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.pros}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="cons">
-                <mat-header-cell *matHeaderCellDef> 약점 </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> 약점 </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.cons}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="eqcap">
-                <mat-header-cell *matHeaderCellDef> 자산(억) </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> 자산(억) </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.eqcap / 10000000|number:'.0-0'}} </mat-cell>
             </ng-container>
 		   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-		   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+		   <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="handleRowClick(row)"></mat-row>
 		</mat-table>
+        <mat-paginator #paginator
+                       [pageSize]="10"
+                       [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
     </div>
 </div>

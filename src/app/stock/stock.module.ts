@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { StockRoutingModule } from './stock-routing.module';
-import { MatTableModule } from '@angular/material';
+import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
@@ -25,6 +25,8 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
       StockRoutingModule,
       HttpClientModule,
       MatTableModule,
+      MatPaginatorModule,
+      MatSortModule,
       PageHeaderModule,
       Ng2Charts,
       MatFormFieldModule,
