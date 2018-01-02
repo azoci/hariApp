@@ -34,7 +34,6 @@ export class ItemComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
     handleRowClick(row) {
-        console.log(row.key);
         this.router.navigate(['/stock/each', row.key]);
     }
 }

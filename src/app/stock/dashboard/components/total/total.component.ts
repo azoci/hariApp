@@ -1,81 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { routerTransition } from '../../../../router.animations';
 import { InvestService } from '../../../../shared/services/stock-service/invest.service';
 import { HistoryService } from '../../../../shared/services/stock-service/history.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort  } from '@angular/material';
 
 @Component({
     selector: 'app-total',
     templateUrl: './total.component.html',
-    styleUrls: ['./total.component.scss'],
-    animations: [routerTransition()]
+    styleUrls: ['./total.component.scss',
+        '../../../../../../node_modules/nvd3/build/nv.d3.css'
+    ],
+    animations: [routerTransition()],
+    encapsulation: ViewEncapsulation.None
 })
 export class TotalComponent implements OnInit {
-
-    public bizcd: any[] = [];
-    //bar chart
-    public barChartOptions: any = {
-        scaleShowVerticalLines: false,
-        responsive: true
-    };
-    public barChartLabels: string[] = [];
-    public amt: any[] = [];
-    public barChartType: string = 'bar';
-    public barChartLegend: boolean = true;
-
-    // lineChart
-    public lineChartLabels: string[] = [];
-    public lineChartOptions: any = {
-        responsive: true
-    };
-    public lineChartColors: Array<any> = [
-        {
-            // Crimson 매입주가
-            backgroundColor: 'rgba(220,20,60,0.2)',
-            borderColor: 'rgba(220,20,60,1)',
-            pointBackgroundColor: 'rgba(220,20,60,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(220,20,60,0.8)'
-        },
-        {
-            // Orange 적정주가(버핏)
-            backgroundColor: 'rgba(255,165,0,0.2)',
-            borderColor: 'rgba(255,165,0,1)',
-            pointBackgroundColor: 'rgba(255,165,0,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(255,165,0,0.8)'
-        },
-        {
-            // GoldenRod 적정주가(그레이엄, 7.2% 10년)
-            backgroundColor: 'rgba(218,165,32,0.2)',
-            borderColor: 'rgba(218,165,32,1)',
-            pointBackgroundColor: 'rgba(218,165,32,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(218,165,32,1)'
-        },
-        {
-            // DeepSkyBlue 현재주가
-            backgroundColor: 'rgba(0,191,255,0.2)',
-            borderColor: 'rgba(0,191,255,1)',
-            pointBackgroundColor: 'rgba(0,191,255,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(0,191,255,0.8)'
+    @ViewChild(MatSort) tradeSort: MatSort;
+    @ViewChild('paginator') tradePaginator: MatPaginator;
+    @ViewChild('paginator2') eventPaginator: MatPaginator;
+    public amtOptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 55
+            },
+            x: function(d){ return d.label; },
+            y: function(d){ return d.value; },
+            showValues: true,
+            valueFormat: function(d){
+                return d3.format(',.3r')(d);
+            },
+            duration: 500,
+            xAxis: {
+                axisLabel: '투자금액(원)'
+            },
+            yAxis: {},
+            showYAxis: false,
+            forceY: [0, ],
         }
-    ];
-    public lineChartLegend: boolean = true;
-    public lineChartType: string = 'line';
+    };
+    public priceOptions = {
+        chart: {
+            type: 'multiBarChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 45,
+                left: 45
+            },
+            clipEdge: true,
+            //staggerLabels: true,
+            duration: 500,
+            stacked: false,
+            xAxis: {
+                axisLabel: '주가(원)',
+                showMaxMin: false,
+            },
+            yAxis: {
+                axisLabelDistance: -20,
+                tickFormat: function(d){
+                return d3.format(',.3r')(d);
+                }
+            }
+        }
+    };
 
-    public invBar: any[] = [{data: []}];
-    public priceLine: any[] = [
-        { data: [965, 59, 80, 81, 56, 55, 65, 59, 80, 81, 56, 55], label: 'Series A' },
-        { data: [528, 48, 40, 19, 86, 27, 28, 48, 40, 19, 86, 27], label: 'Series B' },
-        { data: [518, 48, 77, 9, 100, 27, 18, 48, 77, 9, 100, 27], label: 'Series C' },
-        { data: [18, 48, 77, 9, 100, 528, 48, 40, 19, 86, 81, 56], label: 'Series D' }
-    ];
+    //bar chart
+    public amt: any[];
+    public amtBar: any[];
+    public priceBar: any[];
     public bup: any[] = []; // 적정주가(버핏)
     public grp: any[] = []; // 적정주가(그레이엄, 7.2% 10년)
     public crp: any[] = []; // 현재주가
@@ -92,53 +89,62 @@ export class TotalComponent implements OnInit {
       this.investService.getItem().subscribe(res => {
           console.log(res);
           let items;
+          let invAmt = [];
           for (let i of res.results) {
-              this.barChartLabels.push(i.nm);
-              this.amt.push(Math.round(i.buy_amt));
-              this.byp.push(Math.round(i.buy_price));
+              invAmt.push({'label': i.nm, 'value': i.buy_amt});
+              this.byp.push({x: i.nm, y: i.buy_price});
           }
-          this.invBar = [{data: this.amt, label: '투자금액(원)'}];
+          this.amtBar = [{
+              key: '자기자본순이익률(%)',
+              values: invAmt
+          }];
+
           items = res.results;
           this.investService.getAnaysis().subscribe(res => {
               const data = res.results;
               for (let i of items) {
-                  this.lineChartLabels.push(i.nm);
                   const element = data.filter(e => e.skey === i.skey);
                   for (let j of element) {
-                      switch (j.value_ckey+'') {
-                          case '403' :
-                              this.bup.push(j.tvalue);
+                      switch (j.value_ckey) {
+                          case 403 :
+                              this.bup.push({x: i.nm, y: j.tvalue});
                               break;
-                          case '404' :
-                              this.grp.push(j.tvalue);
+                          case 404 :
+                              this.grp.push({x: i.nm, y: j.tvalue});
                               break;
-                          case '405' :
-                              this.crp.push(j.tvalue);
+                          case 405 :
+                              this.crp.push({x: i.nm, y: j.tvalue});
                               break;
                           default :
                               break;
                       }
                   }
               }
-
-              this.priceLine = [
-                  { data: this.byp, label: '매입주가'},
-                  { data: this.bup, label: '적정주가(버핏)' },
-                  { data: this.grp, label: '적정주가(그레이엄, 7.2% 10년)' },
-                  { data: this.crp, label: '현재주가' }
-              ];
-              console.log(this.lineChartLabels);
-              console.log(this.priceLine);
+              this.priceBar = [{
+                  key: '매입주가',
+                  values: this.byp
+              } , {
+                  key: '현재주가',
+                  values: this.crp
+              } , {
+                  key: '적정주가(버핏)',
+                  values: this.bup
+              } , {
+                  key: '적정주가(그레이엄, 7.2% 10년)',
+                  values: this.grp
+              }];
           });
       });
       this.historyService.getTrades().subscribe(res => {
-          console.log(res);
           this.tradeDS = new MatTableDataSource<Trade>(res.results);
+          this.tradeDS.sort = this.tradeSort;
+          this.tradeDS.paginator = this.tradePaginator;
       });
-      this.historyService.getEvents().subscribe(res => this.eventDS = new MatTableDataSource<Event>(res.results));
-
+      this.historyService.getEvents().subscribe(res => {
+          this.eventDS = new MatTableDataSource<Event>(res.results);
+          this.eventDS.paginator = this.eventPaginator;
+      });
   }
-
 }
 
 export interface Trade {

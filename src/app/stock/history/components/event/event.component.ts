@@ -13,7 +13,9 @@ import { HistoryService } from '../../../../shared/services/stock-service/histor
 export class EventComponent implements OnInit {
 
     public eventForm: FormGroup;
-  constructor(private _fb: FormBuilder, private service: HistoryService) {
+    public visible = false;
+    public message: any;
+    constructor(private _fb: FormBuilder, private service: HistoryService) {
       this.eventForm = this._fb.group({
           dt: ['', <any>Validators.required],
           nm: ['', [<any>Validators.required]],
@@ -21,12 +23,18 @@ export class EventComponent implements OnInit {
           content: ['', <any>Validators.required]
       });
 
-  }
-
-  ngOnInit() {
-  }
-  save(data: any) {
+    }
+    ngOnInit() {
+    }
+    save(data: any) {
       data.dt = data.dt.replace(new RegExp('-', 'g'), '');
-      this.service.postEvent(data).subscribe(res => console.log(res));
-  }
+      this.service.postEvent(data).subscribe(res => {
+          this.eventForm.reset();
+          this.visible = true;
+          this.message = res;
+      });
+    }
+    closeAlert() {
+        this.visible = false;
+    }
 }

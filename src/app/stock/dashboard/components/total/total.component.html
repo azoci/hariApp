@@ -8,8 +8,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="col-lg-12">
-                        <canvas baseChart height="100" [datasets]="invBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="amtOptions" [data]="amtBar"></nvd3>
                     </div>
                 </div>
             </div>
@@ -19,8 +18,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="col-lg-12">
-                        <canvas baseChart height="200" [datasets]="priceLine" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="priceOptions" [data]="priceBar"></nvd3>
                     </div>
                 </div>
             </div>
@@ -29,17 +27,17 @@
                     거래이력
                 </div>
                 <div class="card-body row">
-                    <mat-table #table [dataSource]="tradeDS" class="col-lg-12">
+                    <mat-table #table [dataSource]="tradeDS" class="col-lg-12" matSort>
                         <ng-container matColumnDef="dt">
-                            <mat-header-cell *matHeaderCellDef> 거래일 </mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> 거래일 </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.dt}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="type_nm">
-                            <mat-header-cell *matHeaderCellDef> 구분 </mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> 구분 </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.type_nm}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="nm">
-                            <mat-header-cell *matHeaderCellDef> 회사명 </mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> 회사명 </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="num">
@@ -61,6 +59,10 @@
                         <mat-header-row *matHeaderRowDef="tradeColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: tradeColumns;"></mat-row>
                     </mat-table>
+                    <mat-paginator #paginator
+                                   [pageSize]="10"
+                                   [pageSizeOptions]="[5, 10, 20]">
+                    </mat-paginator>
                 </div>
             </div>
             <div class="card mb-3">
@@ -88,6 +90,10 @@
                         <mat-header-row *matHeaderRowDef="eventColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: eventColumns;"></mat-row>
                     </mat-table>
+                    <mat-paginator #paginator2
+                                   [pageSize]="10"
+                                   [pageSizeOptions]="[5, 10, 20]">
+                    </mat-paginator>
                 </div>
             </div>
         </div>

@@ -50,20 +50,16 @@
                 </div>
                 <div class="card-body row">
                     <div class="col-lg-3">
-                        <canvas baseChart height="400px" [datasets]="croBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="croOptions" [data]="croBar"></nvd3>
                     </div>
                     <div class="col-lg-3">
-                        <canvas baseChart height="400px" [datasets]="roeBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="roeOptions" [data]="roeBar"></nvd3>
                     </div>
                     <div class="col-lg-3">
-                        <canvas baseChart height="400px" [datasets]="rosBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="rosOptions" [data]="rosBar"></nvd3>
                     </div>
                     <div class="col-lg-3">
-                        <canvas baseChart height="400px" [datasets]="wcpBar" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="wcpOptions" [data]="wcpBar"></nvd3>
                     </div>
                 </div>
             </div>
@@ -73,12 +69,10 @@
                 </div>
                 <div class="card-body row">
                     <div class="col-lg-6">
-                        <canvas baseChart height="130" [datasets]="priceLine" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="priceOptions" [data]="priceLine"></nvd3>
                     </div>
                     <div class="col-lg-6">
-                        <canvas baseChart height="130" [datasets]="valueLine" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-                        </canvas>
+                        <nvd3 [options]="valueOptions" [data]="valueLine"></nvd3>
                     </div>
                 </div>
             </div>

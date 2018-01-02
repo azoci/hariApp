@@ -18,6 +18,13 @@ import { EventComponent } from './history/components/event/event.component';
 import { TradeComponent } from './history/components/trade/trade.component';
 import { PageHeaderModule } from './../shared';
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { NvD3Module } from 'ng2-nvd3';
+
+// d3 and nvd3 should be included somewhere
+import 'd3';
+import 'nvd3';
 
 @NgModule({
   imports: [
@@ -35,6 +42,8 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
       FormsModule,
       ReactiveFormsModule,
       SharedPipesModule,
+      NvD3Module,
+      NgbModule.forRoot(),
   ],
   declarations: [
       ItemComponent,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { routerTransition } from '../../../../router.animations';
 import { ItemService } from '../../../../shared/services/stock-service/item.service';
 import { AnalysisService } from '../../../../shared/services/stock-service/analysis.service';
@@ -7,8 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-each',
   templateUrl: './each.component.html',
-  styleUrls: ['./each.component.scss'],
-  animations: [routerTransition()]
+  styleUrls: ['./each.component.scss',
+      '../../../../../../node_modules/nvd3/build/nv.d3.css'
+  ],
+  animations: [routerTransition()],
+  encapsulation: ViewEncapsulation.None
 })
 export class EachComponent implements OnInit, OnDestroy {
 
@@ -26,80 +29,179 @@ export class EachComponent implements OnInit, OnDestroy {
     public bvp; //내재가치(버핏)(401)
     public gvp; //내재가치(그레이엄, 7.2% 10년)(402)
 
-    //bar chart
-    public barChartOptions: any = {
-        scaleShowVerticalLines: false,
-        responsive: true
-    };
-    public barChartLabels: string[] = [
-        '`16',
-        '`15',
-        '`14'
-    ];
-    public barChartType: string = 'bar';
-    public barChartLegend: boolean = true;
-
-    // lineChart
-    public lineChartLabels: string[] = [
-        '`16',
-        '`15',
-        '`14'
-    ];
-    public lineChartOptions: any = {
-        responsive: true
-    };
-    public lineChartColors: any[] = [
-        {
-            // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        },
-        {
-            // dark grey
-            backgroundColor: 'rgba(77,83,96,0.2)',
-            borderColor: 'rgba(77,83,96,1)',
-            pointBackgroundColor: 'rgba(77,83,96,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(77,83,96,1)'
-        },
-        {
-            // grey
-            backgroundColor: 'rgba(148,159,100,0.2)',
-            borderColor: 'rgba(148,159,100,1)',
-            pointBackgroundColor: 'rgba(148,159,100,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,100,0.8)'
+    public croOptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 55
+            },
+            x: function(d){ return '`' + d.label; },
+            y: function(d){ return d.value; },
+            showValues: true,
+            valueFormat: function(d){
+                return d3.format(',2.2f')(d);
+            },
+            duration: 500,
+            xAxis: {
+                axisLabel: '유동비(유동자산/유동부채)'
+            },
         }
-    ];
-    public lineChartLegend: boolean = true;
-    public lineChartType: string = 'line';
+    };
 
-    public croBar: any[] = [{data: [0, 0, 0]}];
-    public roeBar: any[] = [{data: [0, 0, 0]}];
-    public rosBar: any[] = [{data: [0, 0, 0]}];
-    public wcpBar: any[] = [{data: [0, 0, 0]}];
-    public priceLine: any[] = [{data: [0, 0, 0]},{data: [0, 0, 0]},{data: [0, 0, 0]}];
-    public valueLine: any[] = [{data: [0, 0, 0]},{data: [0, 0, 0]}];
+    public roeOptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 55
+            },
+            x: function(d) { return '`' + d.label; },
+            y: function(d) { return d.value; },
+            showValues: true,
+            valueFormat: function(d){
+                return d3.format(',2.2f')(d);
+            },
+            duration: 500,
+            xAxis: {
+                axisLabel: '자기자본순이익률(%)'
+            },
+        }
+    };
 
+     public rosOptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 55
+            },
+            x: function(d){ return '`' + d.label; },
+            y: function(d){ return d.value; },
+            showValues: true,
+            valueFormat: function(d){
+                return d3.format(',2.2f')(d);
+            },
+            duration: 500,
+            xAxis: {
+                axisLabel: '매출수익률(%)'
+            },
+        }
+    };
+
+    public wcpOptions = {
+        chart: {
+            type: 'discreteBarChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 50,
+                left: 55
+            },
+            x: function(d) { return '`' + d.label; },
+            y: function(d) { return d.value / 100000000; },
+            showValues: true,
+            valueFormat: function(d){
+                return d3.format(',.3r')(d);
+            },
+            duration: 500,
+            xAxis: {
+                axisLabel: '운전자본(억)'
+            }
+        }
+    };
+
+    public priceOptions = {
+        chart: {
+            type: 'lineChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 40,
+                left: 55
+            },
+            x: function(d) { return d.x; },
+            y: function(d) { return d.y; },
+            useInteractiveGuideline: true,
+            xAxis: {
+                axisLabel: '결산연도'
+            },
+            yAxis: {
+                axisLabel: '가격(원)',
+                tickFormat: function(d){
+                    return d3.format(',.3r')(d);
+                },
+                axisLabelDistance: -10,
+            },
+            valueFormat: function(d){
+                return d3.format(',.3r')(d);
+            },
+            forceY: [0, ],
+        }
+    };
+    public valueOptions = {
+        chart: {
+            type: 'lineChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 40,
+                left: 55
+            },
+            x: function(d){ return d.x; },
+            y: function(d){ return d.y / 100000000; },
+            useInteractiveGuideline: true,
+            xAxis: {
+                axisLabel: '결산연도'
+            },
+            yAxis: {
+                axisLabel: '가치(억)',
+                tickFormat: function(d) {
+                    return d3.format(',.3r')(d);
+                },
+                axisLabelDistance: -10,
+            },
+            valueFormat: function(d) {
+                return d3.format(',.3r')(d);
+            },
+            forceY: [0, ],
+        }
+    };
+
+    public croBar: any[];
+    public roeBar: any[];
+    public rosBar: any[];
+    public wcpBar: any[];
+    public priceLine: any[];
+    public valueLine: any[];
   constructor(private itemService: ItemService,
           private analysisService: AnalysisService,
           private route: ActivatedRoute) { }
 
+
+
   ngOnInit() {
       this.sub = this.route.params.subscribe(params => {
           this.key = params['key']; // (+) converts string 'id' to a number
-          console.log(this.key);
+          if(!this.key){
+              return;
+          }
           this.itemService.getItem(this.key).subscribe(res => {
               this.item = res;
           });
           this.analysisService.getAnaysis(this.key).subscribe(res => {
-              console.log(res);
               this.drawDashBoard(res);
           });
       });
@@ -111,55 +213,202 @@ export class EachComponent implements OnInit, OnDestroy {
 
       //2.재무요소
       //유동비
-      let ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/313/');
-      this.cro = [ar.tvalue, ar.pvalue, ar.ppvalue];
+      this.cro = res.results.find(x => x.ckey === 313);
+      this.cro.cal_key = '' + this.cro.cal_key;
       this.croBar = [
-          { data: this.cro, label: '유동비(유동자산/유동부채)' }
+          {
+              key: '유동비(유동자산/유동부채)',
+              values: [
+                  {
+                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.cro.tvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 2 ,
+                      "value" : this.cro.pvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.cro.ppvalue
+                  }
+              ]
+          }
       ];
       //자기자본순이익률(ROE)
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/301/');
-      this.roe = [ar.tvalue, ar.pvalue, ar.ppvalue];
+      this.roe = res.results.find(x => x.ckey === 301);
+      this.roe.cal_key = '' + this.roe.cal_key;
       this.roeBar = [
-          { data: this.roe, label: '자기자본순이익률(%)' }
+          {
+              key: '자기자본순이익률(%)',
+              values: [
+                  {
+                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.roe.tvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 2 ,
+                      "value" : this.roe.pvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.roe.ppvalue
+                  }
+              ]
+          }
       ];
       //매출수익률(ROS)
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/313/');
-      this.ros = [ar.tvalue, ar.pvalue, ar.ppvalue];
+      this.ros = res.results.find(x => x.ckey === 313);
+      this.ros.cal_key = '' + this.ros.cal_key;
       this.rosBar = [
-          { data: this.ros, label: '매출수익률(%)' }
+          {
+              key: '매출수익률(%)',
+              values: [
+                  {
+                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.ros.tvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 2 ,
+                      "value" : this.ros.pvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.ros.ppvalue
+                  }
+              ]
+          }
       ];
+
       //운전자본
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/314/');
-      this.wcp = [Math.round(ar.tvalue/100000000), Math.round(ar.pvalue/100000000), Math.round(ar.ppvalue/100000000)];
+      this.wcp = res.results.find(x => x.ckey === 314);
+      this.wcp.cal_key = '' + this.wcp.cal_key;
       this.wcpBar = [
-          { data: this.wcp, label: '운전자본(억)' }
+          {
+              key: '운전자본(억)',
+              values: [
+                  {
+                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.wcp.tvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 2 ,
+                      "value" : this.wcp.pvalue
+                  } ,
+                  {
+                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.wcp.ppvalue
+                  }
+              ]
+          }
       ];
 
       //3.가치요소
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/403/');
-      this.bup = [ar.tvalue, ar.pvalue, ar.ppvalue];
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/404/');
-      this.grp = [ar.tvalue, ar.pvalue, ar.ppvalue];
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/405/');
-      this.crp = [ar.tvalue, ar.pvalue, ar.ppvalue];
+      this.bup = res.results.find(x => x.ckey === 403);
+      this.bup.cal_key = '' + this.bup.cal_key;
+      let bupLine = [];
+      bupLine.push({x: parseInt(this.bup.cal_key.substring(2, 4)) - 3,
+          y: parseInt(this.bup.ppvalue)
+      });
+      bupLine.push({x: parseInt(this.bup.cal_key.substring(2, 4)) - 2,
+          y: parseInt(this.bup.pvalue)
+      });
+      bupLine.push({x: parseInt(this.bup.cal_key.substring(2, 4)) - 1,
+          y: parseInt(this.bup.tvalue)
+      });
+
+      this.grp = res.results.find(x => x.ckey === 404);
+      this.grp.cal_key = '' + this.grp.cal_key;
+      let grpLine = [];
+      grpLine.push({x: parseInt(this.grp.cal_key.substring(2, 4)) - 3,
+          y: parseInt(this.grp.ppvalue)
+      });
+      grpLine.push({x: parseInt(this.grp.cal_key.substring(2, 4)) - 2,
+          y: parseInt(this.grp.pvalue)
+      });
+      grpLine.push({x: parseInt(this.grp.cal_key.substring(2, 4)) - 1,
+          y: parseInt(this.grp.tvalue)
+      });
+
+      this.crp = res.results.find(x => x.ckey === 405);
+      this.crp.cal_key = '' + this.crp.cal_key;
+      let crpLine = [];
+      crpLine.push({x: parseInt(this.crp.cal_key.substring(2, 4)) - 3,
+          y: parseInt(this.crp.ppvalue)
+      });
+      crpLine.push({x: parseInt(this.crp.cal_key.substring(2, 4)) - 2,
+          y: parseInt(this.crp.pvalue)
+      });
+      crpLine.push({x: parseInt(this.crp.cal_key.substring(2, 4)) - 1,
+          y: parseInt(this.crp.tvalue)
+      });
+
       this.priceLine = [
-          { data: this.bup, label: '적정주가(버핏)' },
-          { data: this.grp, label: '적정주가(그레이엄, 7.2% 10년)' },
-          { data: this.crp, label: '현재주가' }
-      ];
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/401/');
-      this.bvp = [Math.round(ar.tvalue/100000000), Math.round(ar.pvalue/100000000), Math.round(ar.ppvalue/100000000)];
-      ar = res.results.find(x => x.value_ckey === 'http://localhost:8000/value/402/');
-      this.gvp = [Math.round(ar.tvalue/100000000), Math.round(ar.pvalue/100000000), Math.round(ar.ppvalue/100000000)];
-      this.valueLine = [
-          { data: this.bvp, label: '내재가치(버핏)/억' },
-          { data: this.gvp, label: '내재가치(그레이엄, 7.2% 10년)/억' }
+          {
+              values: bupLine,      //values - represents the array of {x,y} data points
+              key: '적정주가(버핏)', //key  - the name of the series.
+              color: '#ff6347'  //color - optional: Tomato
+          },
+          {
+              values: grpLine,      //values - represents the array of {x,y} data points
+              key: '적정주가(그레이엄, 7.2% 10년)', //key  - the name of the series.
+              color: 'daa520' //color - optional: GoldenRod
+          },
+          {
+              values: crpLine,      //values - represents the array of {x,y} data points
+              key: '현재주가', //key  - the name of the series.
+              color: '#00bfff'  //color - optional: DeepSkyBlue
+          }
       ];
 
-      //1.기업요소
-      this.bizAnal = {'v101': res.results.find(x => x.value_ckey === 'http://localhost:8000/value/101/').tvalue,
-          'v102': res.results.find(x => x.value_ckey === 'http://localhost:8000/value/102/').tvalue,
-          'v103': res.results.find(x => x.value_ckey === 'http://localhost:8000/value/103/').tvalue
-      };
+      this.bvp = res.results.find(x => x.ckey === 401);
+      this.bvp.cal_key = '' + this.bvp.cal_key;
+      let bvpLine = [];
+      bvpLine.push({x: parseInt(this.bvp.cal_key.substring(2, 4)) - 3,
+          y: parseInt(this.bvp.ppvalue)
+      });
+      bvpLine.push({x: parseInt(this.bvp.cal_key.substring(2, 4)) - 2,
+          y: parseInt(this.bvp.pvalue)
+      });
+      bvpLine.push({x: parseInt(this.bvp.cal_key.substring(2, 4)) - 1,
+          y: parseInt(this.bvp.tvalue)
+      });
+      this.gvp = res.results.find(x => x.ckey === 402);
+      this.gvp.cal_key = '' + this.gvp.cal_key;
+      let gvpLine = [];
+      gvpLine.push({x: parseInt(this.gvp.cal_key.substring(2, 4)) - 3,
+          y: parseInt(this.gvp.ppvalue)
+      });
+      gvpLine.push({x: parseInt(this.gvp.cal_key.substring(2, 4)) - 2,
+          y: parseInt(this.gvp.pvalue)
+      });
+      gvpLine.push({x: parseInt(this.gvp.cal_key.substring(2, 4)) - 1,
+          y: parseInt(this.gvp.tvalue)
+      });
+
+      this.valueLine = [
+          {
+              values: bvpLine,      //values - represents the array of {x,y} data points
+              key: '내재가치(버핏)/억', //key  - the name of the series.
+              color: '#ff6347'  //color - optional: Tomato
+          },
+          {
+              values: gvpLine,      //values - represents the array of {x,y} data points
+              key: '내재가치(그레이엄, 7.2% 10년)/억', //key  - the name of the series.
+              color: 'daa520' //color - optional: GoldenRod
+          }
+      ];
+
+    //1.기업요소
+      if(res.results.find(x => x.value_ckey === 101)){
+           this.bizAnal = {'v101': res.results.find(x => x.value_ckey === 101).tvalue,
+               'v102': res.results.find(x => x.value_ckey === 102).tvalue,
+               'v103': res.results.find(x => x.value_ckey === 103).tvalue
+           };
+      }
+   /* this.bizAnal = {'v101': res.results.find(x => x.value_ckey === 101).tvalue,
+        'v102': res.results.find(x => x.value_ckey === 102).tvalue,
+        'v103': res.results.find(x => x.value_ckey === 103).tvalue
+    };
+    */
   }
 }
