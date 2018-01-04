@@ -1,55 +1,123 @@
 <div [@routerTransition]>
     <div class="page-header">
-        <h4>거래상세</h4>
+        <h4>거래</h4>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <form role="form" [formGroup]="tradeForm" (ngSubmit)="save(tradeForm.value)">
-                <fieldset class="form-group">
-                    <label>거래일</label>
-                    <input type="date" class="form-control" formControlName="dt">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>구분</label>
-                    <select class="form-control" formControlName="type_nm">
-                        <option>매수</option>
-                        <option>매도</option>
-                    </select>
-                </fieldset>
-                <label>회사명</label>
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" formControlName="nm">
-                    <input type="hidden" class="form-control" formControlName="item_key">
-                    <input type="hidden" class="form-control" formControlName="cd">
-                    <input type="hidden" class="form-control" formControlName="yn">
-                    <span class="input-group-btn"><button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button></span>
+            <div class="card mb-3">
+                <div class="card-header">
+                    거래이력
                 </div>
-                <div *ngIf="query?.length > 0">
-                    <ul *ngFor="let item of items | searchFilter: 'nm' : query" >
-                        <li >
-                            <a (click)="select(item)">{{item.nm}}</a>
-                        </li>
-                    </ul>
+                <div class="card-body row">
+                    <mat-table #table [dataSource]="tradeDS" class="col-lg-12" matSort>
+                        <ng-container matColumnDef="select">
+                            <mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                              [checked]="selection.hasValue() && isAllSelected()"
+                                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()"
+                                              (change)="$event ? selection.toggle(row) : null"
+                                              [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="dt">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> 거래일 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.dt}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="type_nm">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> 구분 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.type_nm}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="nm">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> 회사명 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="num">
+                            <mat-header-cell *matHeaderCellDef> 수 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.num}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="price">
+                            <mat-header-cell *matHeaderCellDef> 단가 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="amt">
+                            <mat-header-cell *matHeaderCellDef> 금액 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.amt}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="content">
+                            <mat-header-cell *matHeaderCellDef> 사유 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.content}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="tradeColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: tradeColumns;" (click)="handleRowClick(row)"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator
+                                   [pageSize]="10"
+                                   [pageSizeOptions]="[5, 10, 20]">
+                    </mat-paginator>
                 </div>
-                <fieldset class="form-group">
-                    <label>수</label>
-                    <input type="number" class="form-control" formControlName="num">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>단가</label>
-                    <input type="number" class="form-control" formControlName="price">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>금액</label>
-                    <input type="number" class="form-control" formControlName="amt">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>사유</label>
-                    <textarea class="form-control" rows="3" formControlName="content"></textarea>
-                </fieldset>
-                <button type="submit" class="btn btn-secondary">Submit</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-            </form>
+                <button type="submit" class="btn btn-secondary" (click)="delete()">Delete</button>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    거래상세
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-12">
+                        <form role="form" [formGroup]="tradeForm" (ngSubmit)="save(tradeForm.value)">
+                            <fieldset class="form-group">
+                                <label>거래일</label>
+                                <input type="date" class="form-control" formControlName="dt">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>구분</label>
+                                <select class="form-control" formControlName="type_nm">
+                                    <option></option>
+                                    <option>매수</option>
+                                    <option>매도</option>
+                                </select>
+                            </fieldset>
+                            <label>회사명</label>
+                            <div class="form-group input-group">
+                                <input type="text" class="form-control" formControlName="nm">
+                                <input type="hidden" class="form-control" formControlName="item_key">
+                                <input type="hidden" class="form-control" formControlName="cd">
+                                <input type="hidden" class="form-control" formControlName="yn">
+                                <input type="hidden" class="form-control" formControlName="key">
+                                <span class="input-group-btn"><button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button></span>
+                            </div>
+                            <div *ngIf="query?.length > 0">
+                                <ul *ngFor="let item of items | searchFilter: 'nm' : query" >
+                                    <li >
+                                        <a (click)="select(item)">{{item.nm}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <fieldset class="form-group">
+                                <label>수</label>
+                                <input type="number" class="form-control" formControlName="num">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>단가</label>
+                                <input type="number" class="form-control" formControlName="price">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>금액</label>
+                                <input type="number" class="form-control" formControlName="amt">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>사유</label>
+                                <textarea class="form-control" rows="3" formControlName="content"></textarea>
+                            </fieldset>
+                            <button type="submit" class="btn btn-secondary">{{status}}</button>
+                            <button type="reset" class="btn btn-secondary" (click)="reset()">Reset</button>
+                        </form>
+                    </div>
+                </div>
             <p *ngIf=visible>
                 <ngb-alert (close)="closeAlert()">{{ message | json}}</ngb-alert>
             </p>

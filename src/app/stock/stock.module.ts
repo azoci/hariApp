@@ -8,7 +8,7 @@ import { StockRoutingModule } from './stock-routing.module';
 import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
-import { MatSelectModule } from '@angular/material';
+import { MatSelectModule, MatCheckboxModule } from '@angular/material';
 import { SharedPipesModule } from './../shared/pipes/shared-pipes.module';
 
 import { ItemComponent } from './list/components/item/item.component';
@@ -39,6 +39,7 @@ import 'nvd3';
       MatFormFieldModule,
       MatInputModule,
       MatSelectModule,
+      MatCheckboxModule,
       FormsModule,
       ReactiveFormsModule,
       SharedPipesModule,

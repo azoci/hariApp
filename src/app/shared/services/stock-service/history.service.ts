@@ -26,8 +26,24 @@ export class HistoryService {
         const url = this.historyUrl + 'trade/';
         return this._http.post(url, JSON.stringify(body), httpOptions);
     }
+    putTrade(body: any): Observable<any> {
+        const url = this.historyUrl + 'trade/' + body.key + '/';
+        return this._http.put(url, JSON.stringify(body), httpOptions);
+    }
+    deleteTrade(body: any): Observable<any> {
+        const url = this.historyUrl + 'trade/' + body.key + '/';
+        return this._http.delete(url, httpOptions);
+    }
     postEvent(body: any): Observable<any> {
         const url = this.historyUrl + 'event/';
         return this._http.post(url, JSON.stringify(body), httpOptions);
+    }
+    putEvent(body: any): Observable<any> {
+        const url = this.historyUrl + 'event/'+ body.key + '/';
+        return this._http.put(url, JSON.stringify(body), httpOptions);
+    }
+    deleteEvent(body: any): Observable<any> {
+        const url = this.historyUrl + 'event/' + body.key + '/';
+        return this._http.delete(url, httpOptions);
     }
 }

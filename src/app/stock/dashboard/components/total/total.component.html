@@ -79,9 +79,13 @@
                             <mat-header-cell *matHeaderCellDef> 제목 </mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="rate">
-                            <mat-header-cell *matHeaderCellDef> 등락률 </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.rate}} </mat-cell>
+                        <ng-container matColumnDef="prate">
+                            <mat-header-cell *matHeaderCellDef> KOSPI 등락률 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.prate}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="drate">
+                            <mat-header-cell *matHeaderCellDef> KOSDAQ 등락률 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.drate}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="content">
                             <mat-header-cell *matHeaderCellDef> 내용 </mat-header-cell>

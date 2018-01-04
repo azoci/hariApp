@@ -79,7 +79,7 @@ export class TotalComponent implements OnInit {
     public byp: any[] = []; // 매입주가
 
     public tradeColumns = ['dt', 'type_nm', 'nm', 'num', 'price', 'amt', 'content'];
-    public eventColumns = ['dt', 'nm', 'rate', 'content'];
+    public eventColumns = ['dt', 'nm', 'prate', 'drate', 'content'];
     public tradeDS: any;
     public eventDS: any;
   constructor(private investService: InvestService,
@@ -87,7 +87,6 @@ export class TotalComponent implements OnInit {
 
   ngOnInit() {
       this.investService.getItem().subscribe(res => {
-          console.log(res);
           let items;
           let invAmt = [];
           for (let i of res.results) {
@@ -160,7 +159,8 @@ export interface Trade {
 export interface Event {
     dt: string;
     nm: string;
-    rate: number;
+    prate: number;
+    drate: number;
     content: string;
 
 }

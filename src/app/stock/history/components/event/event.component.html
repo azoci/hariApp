@@ -1,29 +1,92 @@
 <div [@routerTransition]>
     <div class="page-header">
-        <h4>사건상세</h4>
+        <h4>사건</h4>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <form role="form" [formGroup]="eventForm" (ngSubmit)="save(eventForm.value)">
-                <fieldset class="form-group">
-                    <label>사건일</label>
-                    <input type="date" class="form-control" formControlName="dt">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>제목</label>
-                    <input type="text" class="form-control" formControlName="nm">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>등락률</label>
-                    <input type="number" class="form-control" formControlName="rate">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>내용</label>
-                    <textarea class="form-control" rows="3" formControlName="content"></textarea>
-                </fieldset>
-                <button type="submit" class="btn btn-secondary">Submit</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
-            </form>
+            <div class="card mb-3">
+                <div class="card-header">
+                    사건이력
+                </div>
+                <div class="card-body row">
+                    <mat-table #table [dataSource]="eventDS" class="col-lg-12" matSort>
+                        <ng-container matColumnDef="select">
+                            <mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                              [checked]="selection.hasValue() && isAllSelected()"
+                                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()"
+                                              (change)="$event ? selection.toggle(row) : null"
+                                              [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="dt">
+                            <mat-header-cell *matHeaderCellDef> 사건일 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.dt}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="nm">
+                            <mat-header-cell *matHeaderCellDef> 제목 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.nm}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="prate">
+                            <mat-header-cell *matHeaderCellDef> KOSPI 등락률 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.prate}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="drate">
+                            <mat-header-cell *matHeaderCellDef> KOSDAQ 등락률 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.drate}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="content">
+                            <mat-header-cell *matHeaderCellDef> 내용 </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.content}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="eventColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: eventColumns;" (click)="handleRowClick(row)"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator
+                                   [pageSize]="10"
+                                   [pageSizeOptions]="[5, 10, 20]">
+                    </mat-paginator>
+                </div>
+                <button type="submit" class="btn btn-secondary" (click)="delete()">Delete</button>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    사건상세
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-12">
+                        <form role="form" [formGroup]="eventForm" (ngSubmit)="save(eventForm.value)">
+                            <fieldset class="form-group">
+                                <label>사건일</label>
+                                <input type="date" class="form-control" formControlName="dt">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>제목</label>
+                                <input type="text" class="form-control" formControlName="nm">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>KOSPI 등락률</label>
+                                <input type="number" class="form-control" formControlName="prate">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>KOSDAQ 등락률</label>
+                                <input type="number" class="form-control" formControlName="drate">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>내용</label>
+                                <textarea class="form-control" rows="3" formControlName="content"></textarea>
+                            </fieldset>
+                            <input type="hidden" class="form-control" formControlName="key">
+                            <button type="submit" class="btn btn-secondary">{{status}}</button>
+                            <button type="reset" class="btn btn-secondary" (click)="reset()">Reset</button>
+                        </form>
+                    </div>
+                </div>
             <p *ngIf=visible>
                 <ngb-alert (close)="closeAlert()">{{ message | json}}</ngb-alert>
             </p>
