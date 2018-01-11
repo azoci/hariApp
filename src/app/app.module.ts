@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -13,7 +13,10 @@ import { AuthGuard } from './shared';
 import { ItemService } from './shared/services/stock-service/item.service';
 import { AnalysisService } from './shared/services/stock-service/analysis.service';
 import { HistoryService } from './shared/services/stock-service/history.service';
-import { InvestService } from './shared/services/stock-service/invest.service';
+import { PersonalService } from './shared/services/stock-service/personal.service';
+import { LoginServiceService } from './shared/services/common-service/login-service.service';
+import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
+
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -42,7 +45,14 @@ export function createTranslateLoader(http: HttpClient) {
         ItemService,
         AnalysisService,
         HistoryService,
-        InvestService,
+        PersonalService,
+        LoginServiceService,
+        AuthInterceptorService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptorService,
+            multi: true
+        },
     ],
     bootstrap: [AppComponent],
 })

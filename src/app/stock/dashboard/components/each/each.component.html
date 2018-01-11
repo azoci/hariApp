@@ -33,6 +33,29 @@
             </div>
             <div class="card mb-3">
                 <div class="card-header">
+                    재무제표
+                </div>
+                <div class="card-body row">
+                    <div class="col-lg-2">CURRENCY</div>
+                    <div class="col-lg-10">{{noti?.currency}}</div>
+                    <div class="col-lg-2">자산(억)</div>
+                    <div class="col-lg-4">{{noti?.asset/10000000 |number:'.0-0'}}</div>
+                    <div class="col-lg-2">매출액(억)</div>
+                    <div class="col-lg-4">{{noti?.profit/10000000 |number:'.0-0'}}</div>
+                    <div class="col-lg-2">자본(억)</div>
+                    <div class="col-lg-4">{{noti?.capital/10000000 |number:'.0-0'}}</div>
+                    <div class="col-lg-2">EBITDA(억)</div>
+                    <div class="col-lg-4">{{noti?.ebitda/10000000 |number:'.0-0'}}</div>
+                    <div class="col-lg-2">부채(억)</div>
+                    <div class="col-lg-4">{{noti?.debit/10000000 |number:'.0-0'}}</div>
+                    <div class="col-lg-2">수익률(%)</div>
+                    <div class="col-lg-4">{{noti?.ebitda / noti?.capital | percent}}</div>
+                    <div class="col-lg-2">부채비율(%)</div>
+                    <div class="col-lg-4">{{noti?.debit / noti?.capital |percent}}</div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
                     기업요소
                 </div>
                 <div class="card-body row">

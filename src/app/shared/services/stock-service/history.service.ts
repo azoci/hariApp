@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../../environments/environment';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -12,7 +13,7 @@ export class HistoryService {
     private _host: string;
     private _authToken: string;
     private _headers: HttpHeaders;
-    private historyUrl = 'http://localhost:8000/';  // URL
+    private historyUrl = environment.url;  // URL
     constructor(private _http: HttpClient) {}
     getTrades(): Observable<any> {
         const url = this.historyUrl + 'trade';

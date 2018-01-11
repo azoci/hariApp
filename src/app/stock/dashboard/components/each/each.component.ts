@@ -18,6 +18,7 @@ export class EachComponent implements OnInit, OnDestroy {
     private sub;
     private key;
     public item;
+    public noti;
     public bizAnal; //기업요소(100)
     public roe; // 자기자본순이익률(301)
     public ros; // 매출수익률(309)
@@ -201,6 +202,16 @@ export class EachComponent implements OnInit, OnDestroy {
           this.itemService.getItem(this.key).subscribe(res => {
               this.item = res;
           });
+          this.analysisService.getFinance(this.key).subscribe(res => {
+              this.noti = {
+                  asset: res.results.find(x => x.finance_ckey === 100).tamt
+                  , capital: res.results.find(x => x.finance_ckey === 300).tamt
+                  , debit: res.results.find(x => x.finance_ckey === 200).tamt
+                  , profit: res.results.find(x => x.finance_ckey === 601).tamt
+                  , ebitda: res.results.find(x => x.finance_ckey === 606).tamt
+                  , currency: res.results.find(x => x.finance_ckey === 100).currency
+              };
+          });
           this.analysisService.getAnaysis(this.key).subscribe(res => {
               this.drawDashBoard(res);
           });
@@ -220,16 +231,16 @@ export class EachComponent implements OnInit, OnDestroy {
               key: '유동비(유동자산/유동부채)',
               values: [
                   {
-                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 1 ,
-                      "value" : this.cro.tvalue
+                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.cro.ppvalue
                   } ,
                   {
                       "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 2 ,
                       "value" : this.cro.pvalue
                   } ,
                   {
-                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 3 ,
-                      "value" : this.cro.ppvalue
+                      "label" : parseInt(this.cro.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.cro.tvalue
                   }
               ]
           }
@@ -242,38 +253,38 @@ export class EachComponent implements OnInit, OnDestroy {
               key: '자기자본순이익률(%)',
               values: [
                   {
-                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 1 ,
-                      "value" : this.roe.tvalue
+                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.roe.ppvalue
                   } ,
                   {
                       "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 2 ,
                       "value" : this.roe.pvalue
                   } ,
                   {
-                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 3 ,
-                      "value" : this.roe.ppvalue
+                      "label" : parseInt(this.roe.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.roe.tvalue
                   }
               ]
           }
       ];
       //매출수익률(ROS)
-      this.ros = res.results.find(x => x.ckey === 313);
+      this.ros = res.results.find(x => x.ckey === 309);
       this.ros.cal_key = '' + this.ros.cal_key;
       this.rosBar = [
           {
               key: '매출수익률(%)',
               values: [
                   {
-                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 1 ,
-                      "value" : this.ros.tvalue
+                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.ros.ppvalue
                   } ,
                   {
                       "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 2 ,
                       "value" : this.ros.pvalue
                   } ,
                   {
-                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 3 ,
-                      "value" : this.ros.ppvalue
+                      "label" : parseInt(this.ros.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.ros.tvalue
                   }
               ]
           }
@@ -287,16 +298,16 @@ export class EachComponent implements OnInit, OnDestroy {
               key: '운전자본(억)',
               values: [
                   {
-                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 1 ,
-                      "value" : this.wcp.tvalue
+                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 3 ,
+                      "value" : this.wcp.ppvalue
                   } ,
                   {
                       "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 2 ,
                       "value" : this.wcp.pvalue
                   } ,
                   {
-                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 3 ,
-                      "value" : this.wcp.ppvalue
+                      "label" : parseInt(this.wcp.cal_key.substring(2, 4)) - 1 ,
+                      "value" : this.wcp.tvalue
                   }
               ]
           }
@@ -399,7 +410,7 @@ export class EachComponent implements OnInit, OnDestroy {
       ];
 
     //1.기업요소
-      if(res.results.find(x => x.value_ckey === 101)){
+      if (res.results.find(x => x.value_ckey === 101)) {
            this.bizAnal = {'v101': res.results.find(x => x.value_ckey === 101).tvalue,
                'v102': res.results.find(x => x.value_ckey === 102).tvalue,
                'v103': res.results.find(x => x.value_ckey === 103).tvalue

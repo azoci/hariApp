@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { routerTransition } from '../../../../router.animations';
-import { InvestService } from '../../../../shared/services/stock-service/invest.service';
+import { PersonalService } from '../../../../shared/services/stock-service/personal.service';
 import { HistoryService } from '../../../../shared/services/stock-service/history.service';
 import { MatPaginator, MatTableDataSource, MatSort  } from '@angular/material';
 
@@ -82,11 +82,11 @@ export class TotalComponent implements OnInit {
     public eventColumns = ['dt', 'nm', 'prate', 'drate', 'content'];
     public tradeDS: any;
     public eventDS: any;
-  constructor(private investService: InvestService,
+  constructor(private personalService: PersonalService,
         private historyService: HistoryService) {}
 
   ngOnInit() {
-      this.investService.getItem().subscribe(res => {
+      this.personalService.getItems().subscribe(res => {
           let items;
           let invAmt = [];
           for (let i of res.results) {
@@ -99,7 +99,7 @@ export class TotalComponent implements OnInit {
           }];
 
           items = res.results;
-          this.investService.getAnaysis().subscribe(res => {
+          this.personalService.getAnaysises().subscribe(res => {
               const data = res.results;
               for (let i of items) {
                   const element = data.filter(e => e.skey === i.skey);
